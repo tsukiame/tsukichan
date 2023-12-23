@@ -1,0 +1,2 @@
+This folder will be used to store "tsuki.db", the database to hold post information.
+Do not touch this folder unless you know what you are doing.

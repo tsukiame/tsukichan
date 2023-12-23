@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Database for TsukiChan
-database/*
+database/tsuki.db
 
 # Distribution / packaging
 .Python
