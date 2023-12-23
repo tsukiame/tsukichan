@@ -8,6 +8,8 @@ __pycache__/
 
 # Database for TsukiChan
 database/tsuki.db
+database/uploads/*
+!database/uploads/read.txt
 
 # Distribution / packaging
 .Python

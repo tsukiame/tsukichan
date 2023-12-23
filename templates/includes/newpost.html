@@ -1,0 +1,36 @@
+<form method="post" action="/new" enctype="multipart/form-data">
+	<input type="hidden" name="board_id" value="{{ current[0] }}">
+
+	<table>
+		<tbody>
+			<tr>
+				<td class="newpost-title">Name</td>
+				<td>
+					<input type="text" name="name">
+					<button>New topic</button>
+				</td>
+			</tr>
+			<tr>
+				<td class="newpost-title">Option</td>
+				<td>
+					<select name="option">
+						<option></option>
+						<option>sage</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="newpost-title">Message</td>
+				<td>
+					<textarea name="message"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="newpost-title">File</td>
+				<td>
+					<input type="file" name="file">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>

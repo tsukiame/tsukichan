@@ -7,7 +7,8 @@ allowed_file_types:
   - webp
 theme: "tsuki-dark.css"
 
-# Database settings
+# Database settings, you probably don't need to touch these.
 database:
   type: "sqlite"
+  uploads: "database/uploads"
   path: "database/tsuki.db"

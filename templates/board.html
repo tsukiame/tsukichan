@@ -5,13 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" type="text/css" href="static/css/{{ config.theme }}">
+    <link rel="stylesheet" type="text/css" href="/static/css/{{ config.theme }}">
 
     <title>Under construction.</title>
 </head>
 <body>
     {% include 'includes/navigation.html' %}
+    {% include 'includes/newpost.html' %}
 
-    <h1>Welcome.</h1>
+    <hr>
+    <h1>Displaying posts for: {{ current[1] }}</h1>
+    <hr>
 </body>
 </html>
