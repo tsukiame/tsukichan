@@ -1,4 +1,5 @@
-![image](https://github.com/tsukiame/tsukichan/assets/154212868/6dbae08b-dd83-4d1e-aac1-2106298d6da1)
+![image](https://github.com/tsukiame/tsukichan/assets/154212868/f8ab0b5c-762e-45f7-b6eb-049606204675)
+
 
 # Tsuki Chan
    Small, extendable & quick imageboard engine.
