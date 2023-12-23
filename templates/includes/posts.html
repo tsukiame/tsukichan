@@ -1,0 +1,23 @@
+<main>
+	{% for post in posts %}
+		<div class="post-container">
+			<div class="post-information">
+				<span>{{ post[2] }}</span>
+				<span>{{ post[6] }}</span>
+				<span>No. {{ post[0] }}</span>
+			</div>
+
+			<div>
+				File: <a href="/image/{{ post[5] }}">{{ post[5] }}</a>
+				<a href="">ImgOps</a>
+				<a href="">Yandex</a>
+				<a href="">Google</a>
+			</div>
+			<div class="post-contents">
+				<img src="/image/{{ post[5] }}" class="post-file" width="250px" alt="Original poster image">
+				{{ post[4] }}
+			</div>
+		</div>
+		<hr>
+    {% endfor %}
+</main>

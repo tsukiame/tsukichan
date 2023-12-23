@@ -43,10 +43,12 @@ def create_database():
                 message TEXT,
                 file_path TEXT,
                 post_time TEXT,
-                FOREIGN KEY (board_id) REFERENCES boards(id)
+                parent_post_id INTEGER,
+                FOREIGN KEY (board_id) REFERENCES boards(id),
+                FOREIGN KEY (parent_post_id) REFERENCES posts(id)
             );
-
         ''')
+
 
         # Insert default boards
         cursor.execute("INSERT INTO boards (name) VALUES ('/devel/'), ('/b/')")
@@ -114,12 +116,57 @@ def get_board(board_name):
 
     return board
 
+def get_board_posts(board_name):
+    board_name = f"/{board_name}/"
+
+    conn = sqlite3.connect(load_config()['database']['path'])
+    cursor = conn.cursor()
+    cursor.execute('''
+            SELECT
+                original.id AS original_id,
+                original.board_id AS original_board_id,
+                original.name AS original_name,
+                original.option AS original_option,
+                original.message AS original_message,
+                original.file_path AS original_file_path,
+                original.post_time AS original_post_time,
+                
+                COALESCE(reply.id, 0) AS reply_id,
+                COALESCE(reply.name, '') AS reply_name,
+                COALESCE(reply.option, '') AS reply_option,
+                COALESCE(reply.message, '') AS reply_message,
+                COALESCE(reply.file_path, '') AS reply_file_path,
+                COALESCE(reply.post_time, '') AS reply_post_time
+
+            FROM posts AS original
+            
+            LEFT JOIN posts AS reply
+            ON original.id = reply.parent_post_id
+            
+            WHERE 
+                original.board_id = (SELECT id FROM boards WHERE name = ?) AND
+                (reply.id IN (
+                    SELECT id FROM posts WHERE parent_post_id = original.id ORDER BY post_time LIMIT 5
+                ) OR reply.id IS NULL)
+            
+            ORDER BY original.post_time DESC, reply.post_time ASC
+            LIMIT 100;
+        ''', (board_name,))
+
+    posts = cursor.fetchall()
+    conn.close()
+    print(posts)
+
+    return posts
+
+
 @app.route('/board/<board_name>')
 def get_root(board_name):
     return render_template('board.html',
         config=load_config(),
         boards=get_boards(),
-        current=get_board(board_name))
+        current=get_board(board_name),
+        posts=get_board_posts(board_name))
 
 def is_allowed_filename(filename):
     allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789."
