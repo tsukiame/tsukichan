@@ -1,0 +1,12 @@
+# General channel settings
+site_name: "Tsuki Chan"
+description: "A simple image board engine."
+allowed_file_types:
+  - jpg
+  - png
+  - webp
+
+# Database settings
+database:
+  type: "sqlite"
+  path: "database/tsuki.db"

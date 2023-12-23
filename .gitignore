@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Database for TsukiChan
+database/*
+
 # Distribution / packaging
 .Python
 build/
