@@ -5,6 +5,7 @@ allowed_file_types:
   - jpg
   - png
   - webp
+theme: "tsuki-dark.css"
 
 # Database settings
 database:

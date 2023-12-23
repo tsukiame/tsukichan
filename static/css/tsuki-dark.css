@@ -1,0 +1,28 @@
+:root {
+	--body-background: #090d0f;
+	--body-color: #f8f8f8;
+
+	--header-background: linear-gradient(rgb(28,32,35), rgba(13,17,20,0.9));
+
+	--post-color: #0d1114;
+	--post-header: rgba(0, 1, 4, .2);
+	--post-border: rgb(17, 21, 24);
+}
+
+body {
+	background-color: var(--body-background);
+	color: var(--body-color);
+
+	margin: 0px;
+	padding: 0px;
+}
+
+header>nav {
+	background: var(--header-background);
+
+	padding: 5px;
+}
+
+header>nav>a {
+	color: white;
+}

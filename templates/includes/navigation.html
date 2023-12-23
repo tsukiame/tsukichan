@@ -1,13 +1,9 @@
 <header>
-    <h1>{{ config.site_name }}</h1>
-    <p>{{ config.description }}</p>
     <nav>
-        <ul>
-            {% for board in boards %}
-                <li>
-                    <a href="boards{{board[1]}}">{{ board[1] }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for board in boards %}
+                [ <a href="boards{{board[1]}}">{{ board[1] }}</a> ]
+        {% endfor %}
+
+        [ <a href="#">settings</a> ]
     </nav>
 </header>
