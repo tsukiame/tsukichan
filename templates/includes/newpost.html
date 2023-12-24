@@ -1,4 +1,4 @@
-<form method="post" action="/new" enctype="multipart/form-data">
+<form method="post" action="/new" enctype="multipart/form-data" class="newpost">
 	{% if op %}
         <h1>Reply</h1>
         <input type="hidden" name="reply_to" value="{{ op[0] }}">
@@ -14,7 +14,6 @@
 				<td class="newpost-title">Name</td>
 				<td>
 					<input type="text" name="name">
-					<button>New topic</button>
 				</td>
 			</tr>
 			<tr>
@@ -40,4 +39,6 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<button type="submit">Post</button>
 </form>

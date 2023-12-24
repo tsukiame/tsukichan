@@ -1,12 +1,21 @@
+/* TODO: Move away from Google API, either store ttf's locally or pull from a more privacy respecting CDN */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap');
+
 :root {
 	--body-background: #090d0f;
 	--body-color: #f8f8f8;
 
 	--header-background: linear-gradient(rgb(28,32,35), rgba(13,17,20,0.9));
+	--header-link-color: #ffffff;
 
 	--post-color: #0d1114;
 	--post-header: rgba(0, 1, 4, .2);
 	--post-border: rgb(17, 21, 24);
+	--post-name: #d63e34;
+
+	--link-color: #53bdb1;
+	--link-color-hover: #72e8da;
 }
 
 body {
@@ -15,6 +24,21 @@ body {
 
 	margin: 0px;
 	padding: 0px;
+
+	font-family: 'Inconsolata', monospace;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+
+	color: var(--link-color);
+	transition: color 0.3s ease;
+}
+
+a:hover {
+	color: var(--link-color-hover);
 }
 
 header>nav {
@@ -24,7 +48,7 @@ header>nav {
 }
 
 header>nav>a {
-	color: white;
+	color: var(--header-link-color);
 }
 
 .post-container {
@@ -41,10 +65,25 @@ header>nav>a {
 	padding-bottom: 5px;
 }
 
+.post-name {
+	font-family: 'Fira Code', monospace;
+	font-weight: bolder;
+	font-size: 16px;
+
+	color: var(--post-name);
+}
+
 .reply-container {
 	margin: 20px;
 	background-color: var(--post-color);
 	border: 1px solid var(--post-border);
+}
+
+.reply-information {
+	background-color: var(--post-header);
+	border: 0px solid var(--post-border);
+	border-bottom-width: 2px;
+	padding: 3px;
 }
 
 .reply-contents {
@@ -52,7 +91,28 @@ header>nav>a {
 	align-items: flex-start;
 }
 
+.reply-all {
+	padding: 7px;
+}
+
 .reply-file {
 	padding-right: 5px;
 	padding-bottom: 5px;
+}
+
+form.newpost, form.newpost>table {
+	width: 450px;
+	max-width: 100%;
+	text-align: left;
+	margin: auto;
+}
+
+form.newpost>h1, form.newpost>button {
+	text-align: center;
+}
+
+form.newpost>table>tbody>tr>td>input,
+form.newpost>table>tbody>tr>td>textarea,
+form.newpost>table>tbody>tr>td>select {
+	width: 100%;
 }

@@ -1,10 +1,11 @@
 <main>
 	{% for post in posts %}
+		<hr>
 		<div class="post-container">
 			<div class="post-information">
-				<span>{{ post[2] }}</span>
+				<span class="post-name">{{ post[2] }}</span>
 				<span>{{ post[6] }}</span>
-				<span>No. <a href="/board{{ current[1] }}thread/{{ post[0] }}">{{ post[0] }}</a></span>
+				<span><a href="/board{{ current[1] }}thread/{{ post[0] }}">No. {{ post[0] }}</a></span>
 			</div>
 
 			<div>
@@ -18,6 +19,5 @@
 				{{ post[4] }}
 			</div>
 		</div>
-		<hr>
     {% endfor %}
 </main>
