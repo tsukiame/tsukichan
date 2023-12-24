@@ -16,5 +16,26 @@
     <hr>
     <h1>Displaying posts for: {{ current[1] }} on No. {{ op[0] }}</h1>
     <hr>
+
+    <div class="post-container">
+        <div class="post-information">
+            <span>{{ op[2] }}</span>
+            <span>{{ op[6] }}</span>
+            <span>No. <a href="/board{{ current[1] }}thread/{{ op[0] }}">{{ op[0] }}</a></span>
+        </div>
+
+        <div>
+            File: <a href="/image/{{ op[5] }}">{{ op[5] }}</a>
+            <a href="">ImgOps</a>
+            <a href="">Yandex</a>
+            <a href="">Google</a>
+        </div>
+        <div class="post-contents">
+            <img src="/image/{{ op[5] }}" class="post-file" width="250px" alt="Original poster image">
+            {{ op[4] }}
+        </div>
+    </div>
+
+    {% include 'includes/replies.html' %}
 </body>
 </html>

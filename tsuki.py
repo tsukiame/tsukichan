@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
+# TODO: Move configuration functions, database functions, etc... to their own files for more organization.
+
 def load_config():
     try:
         with open('config.yml', 'r') as file:
@@ -74,6 +76,9 @@ def new_post():
     timestamp = int(time() * 1000)
     filename = ""
 
+    if name == None or name == "":
+        name = "Anonymous"
+
     # TODO: Better handling of filename / getting file type.
     # Splitting can lead to issues without proper input handling. (image.jpg.png for example, or malicious actors)
     # but, this works for a hacky workaround until more critical features are finished.
@@ -82,14 +87,21 @@ def new_post():
         file.save(os.path.join(load_config()['database']['uploads'], filename))
     else:
         print("No file provided, need to handle this better in the future.")
-        exit(1)
+        abort(403)
 
     conn = sqlite3.connect(load_config()['database']['path'])
     cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO posts (board_id, name, option, message, file_path, post_time)
-        VALUES (?, ?, ?, ?, ?, datetime('now'))
-    ''', (board_id, name, option, message, filename))
+
+    if reply_to != None and reply_to != "":
+        cursor.execute('''
+            INSERT INTO posts (board_id, name, option, message, file_path, post_time, parent_post_id)
+            VALUES (?, ?, ?, ?, ?, datetime('now'), ?);
+        ''', (board_id, name, option, message, filename, reply_to))
+    else:
+        cursor.execute('''
+            INSERT INTO posts (board_id, name, option, message, file_path, post_time)
+            VALUES (?, ?, ?, ?, ?, datetime('now'))
+        ''', (board_id, name, option, message, filename))
 
     conn.commit()
     conn.close()
@@ -124,35 +136,11 @@ def get_board_posts(board_name):
     conn = sqlite3.connect(load_config()['database']['path'])
     cursor = conn.cursor()
     cursor.execute('''
-            SELECT
-                original.id AS original_id,
-                original.board_id AS original_board_id,
-                original.name AS original_name,
-                original.option AS original_option,
-                original.message AS original_message,
-                original.file_path AS original_file_path,
-                original.post_time AS original_post_time,
-                
-                COALESCE(reply.id, 0) AS reply_id,
-                COALESCE(reply.name, '') AS reply_name,
-                COALESCE(reply.option, '') AS reply_option,
-                COALESCE(reply.message, '') AS reply_message,
-                COALESCE(reply.file_path, '') AS reply_file_path,
-                COALESCE(reply.post_time, '') AS reply_post_time
-
-            FROM posts AS original
-            
-            LEFT JOIN posts AS reply
-            ON original.id = reply.parent_post_id
-            
-            WHERE 
-                original.board_id = (SELECT id FROM boards WHERE name = ?) AND
-                (reply.id IN (
-                    SELECT id FROM posts WHERE parent_post_id = original.id ORDER BY post_time LIMIT 5
-                ) OR reply.id IS NULL)
-            
-            ORDER BY original.post_time DESC, reply.post_time ASC
-            LIMIT 100;
+        SELECT * FROM posts WHERE
+            board_id = (SELECT id FROM boards WHERE name = ?) AND
+            parent_post_id IS NULL
+        ORDER BY post_time DESC
+        LIMIT 100;
         ''', (board_name,))
 
     posts = cursor.fetchall()
@@ -170,6 +158,18 @@ def get_post(post_id):
 
     return post
 
+def get_replies(post_id):
+    conn = sqlite3.connect(load_config()['database']['path'])
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT * FROM posts WHERE
+            parent_post_id=?
+    ''', (post_id,))
+    replies = cursor.fetchall()
+    conn.close()
+
+    return replies    
+
 @app.route('/board/<board_name>/')
 def get_root(board_name):
     return render_template('board.html',
@@ -184,7 +184,8 @@ def get_thread(board_name, post_id):
         config=load_config(),
         boards=get_boards(),
         current=get_board(board_name),
-        op=get_post(post_id))
+        op=get_post(post_id),
+        replies=get_replies(post_id))
 
 def is_allowed_filename(filename):
     allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789."

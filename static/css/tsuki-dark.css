@@ -40,3 +40,19 @@ header>nav>a {
 	padding-right: 5px;
 	padding-bottom: 5px;
 }
+
+.reply-container {
+	margin: 20px;
+	background-color: var(--post-color);
+	border: 1px solid var(--post-border);
+}
+
+.reply-contents {
+	display: flex;
+	align-items: flex-start;
+}
+
+.reply-file {
+	padding-right: 5px;
+	padding-bottom: 5px;
+}

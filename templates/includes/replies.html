@@ -1,0 +1,22 @@
+{% for post in replies %}
+	<div class="reply-container">
+		<div class="reply-information">
+			<span>{{ post[2] }}</span>
+			<span>{{ post[6] }}</span>
+			<span>No. <a href="/board{{ current[1] }}thread/{{ post[0] }}">{{ post[0] }}</a></span>
+		</div>
+
+		<!-- TODO: Don't display file information if there is no file on reply. -->
+		<div>
+			File: <a href="/image/{{ post[5] }}">{{ post[5] }}</a>
+			<a href="">ImgOps</a>
+			<a href="">Yandex</a>
+			<a href="">Google</a>
+		</div>
+		<div class="reply-contents">
+			<img src="/image/{{ post[5] }}" class="reply-file" width="150px" alt="Original poster image">
+			{{ post[4] }}
+		</div>
+	</div>
+	<hr>
+{% endfor %}
