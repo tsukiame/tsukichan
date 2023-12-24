@@ -86,8 +86,9 @@ def new_post():
         filename = f"{timestamp}.{secure_filename(file.filename.split('.')[-1])}"
         file.save(os.path.join(load_config()['database']['uploads'], filename))
     else:
-        print("No file provided, need to handle this better in the future.")
-        abort(403)
+        if reply_to == None or reply_to == "":
+            print("No file provided, need to handle this better in the future.")
+            abort(403)
 
     conn = sqlite3.connect(load_config()['database']['path'])
     cursor = conn.cursor()
@@ -145,7 +146,6 @@ def get_board_posts(board_name):
 
     posts = cursor.fetchall()
     conn.close()
-    print(posts)
 
     return posts
 

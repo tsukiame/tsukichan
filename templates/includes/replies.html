@@ -6,16 +6,19 @@
 			<span><a href="/board{{ current[1] }}thread/{{ post[0] }}">No. {{ post[0] }}</a></span>
 		</div>
 
-		<!-- TODO: Don't display file information if there is no file on reply. -->
 		<div class="reply-all">
+			{% if post[5] is not none and post[5] != '' %}
 			<div>
 				File: <a href="/image/{{ post[5] }}">{{ post[5] }}</a>
 				<a href="">ImgOps</a>
 				<a href="">Yandex</a>
 				<a href="">Google</a>
 			</div>
+			{% endif %}
 			<div class="reply-contents">
+				{% if post[5] is not none and post[5] != '' %}
 				<img src="/image/{{ post[5] }}" class="reply-file" width="150px" alt="Original poster image">
+				{% endif %}
 				{{ post[4] }}
 			</div>
 		</div>
