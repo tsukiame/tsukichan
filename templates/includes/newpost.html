@@ -1,4 +1,11 @@
 <form method="post" action="/new" enctype="multipart/form-data">
+	{% if op %}
+        <h1>Reply</h1>
+        <input type="hidden" name="reply_to" value="{{ op[0] }}">
+    {% else %}
+        <h1>Start a new thread.</h1>
+    {% endif %}
+
 	<input type="hidden" name="board_id" value="{{ current[0] }}">
 
 	<table>

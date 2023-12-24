@@ -63,10 +63,12 @@ def create_database():
 
 @app.route('/new', methods=['POST'])
 def new_post():
+    # TODO: Cleanup on thread creation. Delete images and threads which are older than 100.
     name = request.form.get('name')
     option = request.form.get('option')
     message = request.form.get('message')
     board_id = request.form.get('board_id')
+    reply_to = request.form.get('reply_to')
     file = request.files['file']
 
     timestamp = int(time() * 1000)
@@ -159,14 +161,30 @@ def get_board_posts(board_name):
 
     return posts
 
+def get_post(post_id):
+    conn = sqlite3.connect(load_config()['database']['path'])
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM posts WHERE id=?", (post_id,))
+    post = cursor.fetchone()
+    conn.close()
 
-@app.route('/board/<board_name>')
+    return post
+
+@app.route('/board/<board_name>/')
 def get_root(board_name):
     return render_template('board.html',
         config=load_config(),
         boards=get_boards(),
         current=get_board(board_name),
         posts=get_board_posts(board_name))
+
+@app.route('/board/<board_name>/thread/<post_id>')
+def get_thread(board_name, post_id):
+    return render_template('thread.html',
+        config=load_config(),
+        boards=get_boards(),
+        current=get_board(board_name),
+        op=get_post(post_id))
 
 def is_allowed_filename(filename):
     allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789."
